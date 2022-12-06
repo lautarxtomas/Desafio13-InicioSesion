@@ -1,9 +1,9 @@
-const path = require('path');
 const express = require('express');
 const session = require('express-session')
 const { engine } = require('express-handlebars');
 const router = require('./src/routes/router');
 const cookieParser = require('cookie-parser');
+const passport = require('passport')
 
 const MongoStore = require('connect-mongo')
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
@@ -20,11 +20,6 @@ const controllerProductos = new ContenedorProductos()
 const controllerMensajes = new ContenedorMensajes()
 
 
-/* ------ Socket.io ------ */
-
-const { Server: HttpServer } = require('http')
-const { Server: Socket } = require('socket.io')
-
 const app = express();
 
 app.use(session({ 
@@ -39,6 +34,9 @@ app.use(session({
     cookie: { maxAge: 60000 }
 }))
 
+/* ------ Socket.io ------ */
+const { Server: HttpServer } = require('http')
+const { Server: Socket } = require('socket.io')
 const httpServer = new HttpServer(app)
 const io = new Socket(httpServer)
 
@@ -46,7 +44,6 @@ const io = new Socket(httpServer)
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(express.static('public')); // --> descomentar y comentar las 6 lineas de abajo para probar con HTML (no handlebars), faltan sessions
 
 app.use(cookieParser())
 app.use(router)
@@ -54,6 +51,9 @@ app.use(express.static('views'));
 app.engine('handlebars', engine())
 app.set('views', './views');
 app.set('view engine', 'handlebars')
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 io.on('connection', async socket => {

@@ -1,9 +1,9 @@
-{{#if name}}
+{{#if username}}
 <div class="bg-success p-4 mb-4 d-flex justify-content-between align-items-center" style="--bs-bg-opacity: .5;">
-	<h1>Bienvenido {{name}}</h1>
+	<h1>Bienvenido {{username}}</h1>
 	<form action="/logout" method="POST">
 		<div>
-			<input class="btn btn-success" type='submit' value='Salir' />
+			<input class="btn btn-success" type='submit' value='Cerrar sesión' />
 		</div>
 	</form>
 </div>
