@@ -45,15 +45,15 @@ const io = new Socket(httpServer)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(cookieParser())
 app.use(router)
 app.use(express.static('views'));
 app.engine('handlebars', engine())
 app.set('views', './views');
 app.set('view engine', 'handlebars')
-
-app.use(passport.initialize())
-app.use(passport.session())
 
 
 io.on('connection', async socket => {
