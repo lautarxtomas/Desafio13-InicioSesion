@@ -49,12 +49,14 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use(cookieParser())
-app.use(router)
 app.use(express.static('views'));
 app.engine('handlebars', engine())
 app.set('views', './views');
 app.set('view engine', 'handlebars')
 
+app.use('/api/productos-test', routerProductos) // --> esta ruta trae 5 productos random de faker js. Despues se fetchea en el index.js y se renderizan los productos. IMPORTANTE: SI NO PONEMOS ESTO ARRIBA DEL APP.USE(router) SE ROMPE LA RUTA.
+
+app.use(router) // poner esto siempre abajo del app.use(passport) y el static
 
 io.on('connection', async socket => {
 
@@ -78,21 +80,20 @@ io.on('connection', async socket => {
 
 /* -------  Rutas  -------- */
 
-app.use('/api/productos-test', routerProductos) // --> esta ruta trae 5 productos random de faker js. Despues se fetchea en el index.js y se renderizan los productos.
 
-app.get('/info', (req, res) => {
-    if (req.session.contador) {
-        req.session.contador++
-        res.send(`Usted ha visitado el sitio ${req.session.contador} veces.`)
-    } else {
-        req.session.contador = 1
-        res.send('Bienvenido!')
-    }
-})
+// app.get('/info', (req, res) => {
+//     if (req.session.contador) {
+//         req.session.contador++
+//         res.send(`Usted ha visitado el sitio ${req.session.contador} veces.`)
+//     } else {
+//         req.session.contador = 1
+//         res.send('Bienvenido!')
+//     }
+// })
 
-app.get('/sessions', (req, res) => {
-    res.json(req.session)
-})
+// app.get('/sessions', (req, res) => {
+//     res.json(req.session)
+// })
 
 
 /* -------  Server  -------- */

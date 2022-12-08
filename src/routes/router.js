@@ -3,6 +3,7 @@ const passport = require('passport')
 const { getIndex, getLogin, getSignup, postLogin, postSignup, getFailLogin, getFailSignup, getLogout, failRoute } = require('../controllers/controller')
 const checkAuthentication = require('../middlewares/auth')
 
+
 // Index
 router.get('/', checkAuthentication, getIndex)
 
@@ -25,6 +26,7 @@ router.post('/logout', getLogout)
 
 // Fail route
 router.get('*', failRoute)
+
 
 module.exports = router
 
